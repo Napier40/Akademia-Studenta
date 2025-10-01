@@ -5,37 +5,15 @@ All SQLAlchemy models and database initialization
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import os
 
 # Initialize SQLAlchemy
 db = SQLAlchemy()
 
 
-def init_db(app):
-    """
-    Initialize database with the Flask app
-    Creates all tables if they don't exist
-    """
-    import os
-    
-    # Ensure instance directory exists
-    instance_path = os.path.join(os.path.dirname(__file__), 'instance')
-    os.makedirs(instance_path, exist_ok=True)
-    
-    db.init_app(app)
-    
-    with app.app_context():
-        # Create all tables
-        db.create_all()
-        
-        # Get database path for display
-        db_uri = app.config['SQLALCHEMY_DATABASE_URI']
-        if db_uri.startswith('sqlite:///'):
-            db_path = db_uri.replace('sqlite:///', '')
-            print(f"✓ Database tables created successfully")
-            print(f"  Database location: {db_path}")
-        else:
-            print("✓ Database tables created successfully")
-
+# ============================================================================
+# DATABASE MODELS - Define BEFORE init_db function
+# ============================================================================
 
 class BlogPost(db.Model):
     """
@@ -245,11 +223,58 @@ class ContactInquiry(db.Model):
         db.session.commit()
 
 
-# Helper function to seed database with sample data
+# ============================================================================
+# DATABASE INITIALIZATION - After models are defined
+# ============================================================================
+
+def init_db(app):
+    """
+    Initialize database with the Flask app
+    Creates all tables if they don't exist
+    
+    IMPORTANT: This function is called AFTER all models are defined above
+    """
+    # Ensure instance directory exists
+    instance_path = os.path.join(os.path.dirname(__file__), 'instance')
+    os.makedirs(instance_path, exist_ok=True)
+    
+    # Initialize SQLAlchemy with the app
+    db.init_app(app)
+    
+    # Create all tables within app context
+    with app.app_context():
+        # This will create tables for ALL models defined above
+        db.create_all()
+        
+        # Verify tables were created
+        from sqlalchemy import inspect
+        inspector = inspect(db.engine)
+        tables = inspector.get_table_names()
+        
+        # Get database path for display
+        db_uri = app.config['SQLALCHEMY_DATABASE_URI']
+        if db_uri.startswith('sqlite:///'):
+            db_path = db_uri.replace('sqlite:///', '')
+            print(f"✓ Database initialized successfully")
+            print(f"  Location: {db_path}")
+            print(f"  Tables created: {', '.join(tables)}")
+        else:
+            print(f"✓ Database initialized successfully")
+            print(f"  Tables created: {', '.join(tables)}")
+
+
+# ============================================================================
+# SAMPLE DATA SEEDING
+# ============================================================================
+
 def seed_sample_data():
     """
     Add sample blog posts to the database
     Only adds if database is empty
+    
+    Call this function within an app context:
+        with app.app_context():
+            seed_sample_data()
     """
     # Check if we already have posts
     if BlogPost.query.first():

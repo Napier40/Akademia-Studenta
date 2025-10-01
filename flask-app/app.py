@@ -35,7 +35,22 @@ def create_app(config_class=Config):
     def inject_language():
         """Make current language available in all templates"""
         from flask import session
-        return dict(current_language=session.get('language', 'en'))
+        from flask_babel import get_locale
+        return dict(
+            current_language=session.get('language', 'en'),
+            get_locale=get_locale
+        )
+    
+    # Template filters
+    @app.template_filter('format_date')
+    def format_date(date):
+        """Format datetime for display"""
+        if date is None:
+            return ''
+        from datetime import datetime
+        if isinstance(date, datetime):
+            return date.strftime('%B %d, %Y')
+        return str(date)
     
     return app
 

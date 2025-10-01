@@ -95,13 +95,13 @@
                     <div class="card-body">
                         <h4 class="card-title mb-4">{{ _('Leave Your Feedback') }}</h4>
                         
-                        <form method="POST" action="{{ url_for('submit_comment', slug=post.slug) }}">
+                        <form method="POST" action="{{ url_for('blog_post', slug=post.slug) }}">
                             {{ form.hidden_tag() }}
                             
                             <!-- Anonymous Checkbox -->
                             <div class="form-check mb-3">
-                                {{ form.is_anonymous(class="form-check-input", id="isAnonymous") }}
-                                {{ form.is_anonymous.label(class="form-check-label") }}
+                                   {# {{ form.is_anonymous(class="form-check-input", id="isAnonymous") }} #}
+                                   {# {{ form.is_anonymous.label(class="form-check-label") }} #}
                             </div>
                             
                             <!-- Name and Email (hidden when anonymous) -->
