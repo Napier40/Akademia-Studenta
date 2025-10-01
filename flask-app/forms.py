@@ -112,6 +112,7 @@ class BlogSearchForm(FlaskForm):
 class CustomerBlogPostForm(FlaskForm):
     """
     Form for customers to submit blog posts (single language)
+    Customers submit in ONE language - either English OR Polish
     """
     language = SelectField(
         'Language',
@@ -131,11 +132,6 @@ class CustomerBlogPostForm(FlaskForm):
         ]
     )
     
-    excerpt = TextAreaField(
-        'Brief Summary',
-        validators=[Optional(), Length(max=500)]
-    )
-    
     content = TextAreaField(
         'Content',
         validators=[
@@ -149,9 +145,14 @@ class CustomerBlogPostForm(FlaskForm):
         validators=[Optional(), Length(max=100)]
     )
     
-    featured_image = StringField(
-        'Featured Image URL',
-        validators=[Optional(), Length(max=500)]
+    author_name = StringField(
+        'Your Name (Optional)',
+        validators=[Optional(), Length(max=100)]
+    )
+    
+    author_email = StringField(
+        'Your Email (Optional)',
+        validators=[Optional(), Email(), Length(max=120)]
     )
 
 

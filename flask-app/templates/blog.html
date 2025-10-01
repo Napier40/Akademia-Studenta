@@ -6,18 +6,81 @@
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">{{ _('Our Blog') }}</h1>
-        <a href="{{ url_for('submit_blog_post') }}" class="btn btn-primary">
-            <i class="bi bi-pencil-square"></i> Submit Your Post
-        </a>
+        <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#submitPostForm">
+            <i class="bi bi-pencil-square"></i> {{ _('Submit Your Post') }}
+        </button>
+    </div>
+    
+    <!-- Customer Blog Submission Form (Collapsible) -->
+    <div class="collapse mb-5" id="submitPostForm">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-pencil-square"></i> {{ _('Submit Your Blog Post') }}</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('submit_blog_post') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> 
+                        {{ _('Submit your post in one language. Our team will review it before publishing.') }}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="language" class="form-label">{{ _('Language') }} *</label>
+                            {{ form.language(class="form-select", id="language") }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">{{ _('Category') }}</label>
+                            {{ form.category(class="form-control", id="category", placeholder=_('e.g., Technology, Business, Tips')) }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="title" class="form-label">{{ _('Title') }} *</label>
+                        {{ form.title(class="form-control", id="title", placeholder=_('Enter your post title')) }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="content" class="form-label">{{ _('Content') }} *</label>
+                        {{ form.content(class="form-control", id="content", rows="10", placeholder=_('Write your blog post content here...')) }}
+                        <small class="text-muted">{{ _('Minimum 50 characters') }}</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="author_name" class="form-label">{{ _('Your Name') }} ({{ _('Optional') }})</label>
+                            {{ form.author_name(class="form-control", id="author_name", placeholder=_('Your name')) }}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="author_email" class="form-label">{{ _('Your Email') }} ({{ _('Optional') }})</label>
+                            {{ form.author_email(class="form-control", id="author_email", placeholder=_('your@email.com')) }}
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-send"></i> {{ _('Submit Post') }}
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#submitPostForm">
+                            {{ _('Cancel') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     
     <!-- Search and Filter -->
     <div class="row mb-4">
         <div class="col-md-8">
             <form method="GET" action="{{ url_for('blog') }}" class="d-flex gap-2">
-                <input type="text" name="search" class="form-control" 
+                <input type="text" name="q" class="form-control" 
                        placeholder="{{ _('Search posts...') }}" 
-                       value="{{ search or '' }}">
+                       value="{{ search_query or '' }}">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-search"></i> {{ _('Search') }}
                 </button>
@@ -26,26 +89,20 @@
         <div class="col-md-4">
             <select class="form-select" onchange="window.location.href=this.value">
                 <option value="{{ url_for('blog') }}">{{ _('All Categories') }}</option>
-                <option value="{{ url_for('blog', category='Business Tips' if get_locale() == 'en' else 'Porady biznesowe') }}"
-                        {% if category == 'Business Tips' or category == 'Porady biznesowe' %}selected{% endif %}>
-                    {{ _('Business Tips') }}
+                {% for cat in categories %}
+                <option value="{{ url_for('blog', category=cat) }}"
+                        {% if selected_category == cat %}selected{% endif %}>
+                    {{ cat }}
                 </option>
-                <option value="{{ url_for('blog', category='Technology' if get_locale() == 'en' else 'Technologia') }}"
-                        {% if category == 'Technology' or category == 'Technologia' %}selected{% endif %}>
-                    {{ _('Technology') }}
-                </option>
-                <option value="{{ url_for('blog', category='Case Studies' if get_locale() == 'en' else 'Studia przypadków') }}"
-                        {% if category == 'Case Studies' or category == 'Studia przypadków' %}selected{% endif %}>
-                    {{ _('Case Studies') }}
-                </option>
+                {% endfor %}
             </select>
         </div>
     </div>
     
     <!-- Blog Posts Grid -->
-    {% if posts.items %}
+    {% if posts %}
     <div class="row g-4 mb-4">
-        {% for post in posts.items %}
+        {% for post in posts %}
         <div class="col-md-4">
             <div class="card blog-card border-0 shadow-sm h-100">
                 {% if post.featured_image %}
@@ -54,7 +111,7 @@
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <small class="text-muted">
-                            <i class="bi bi-calendar"></i> {{ post.published_at|format_date }}
+                            <i class="bi bi-calendar"></i> {{ post.published_at|format_date if post.published_at else post.created_at|format_date }}
                         </small>
                         {% if post.get_category(get_locale()) %}
                         <span class="badge bg-primary">{{ post.get_category(get_locale()) }}</span>
@@ -77,19 +134,19 @@
     </div>
     
     <!-- Pagination -->
-    {% if posts.pages > 1 %}
+    {% if pagination.pages > 1 %}
     <nav aria-label="Blog pagination">
         <ul class="pagination justify-content-center">
-            <li class="page-item {% if not posts.has_prev %}disabled{% endif %}">
-                <a class="page-link" href="{{ url_for('blog', page=posts.prev_num, category=category, search=search) if posts.has_prev else '#' }}">
+            <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('blog', page=pagination.prev_num, category=selected_category, q=search_query) if pagination.has_prev else '#' }}">
                     <i class="bi bi-chevron-left"></i> {{ _('Previous') }}
                 </a>
             </li>
             
-            {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
                 {% if page_num %}
-                    <li class="page-item {% if page_num == posts.page %}active{% endif %}">
-                        <a class="page-link" href="{{ url_for('blog', page=page_num, category=category, search=search) }}">
+                    <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('blog', page=page_num, category=selected_category, q=search_query) }}">
                             {{ page_num }}
                         </a>
                     </li>
@@ -100,8 +157,8 @@
                 {% endif %}
             {% endfor %}
             
-            <li class="page-item {% if not posts.has_next %}disabled{% endif %}">
-                <a class="page-link" href="{{ url_for('blog', page=posts.next_num, category=category, search=search) if posts.has_next else '#' }}">
+            <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('blog', page=pagination.next_num, category=selected_category, q=search_query) if pagination.has_next else '#' }}">
                     {{ _('Next') }} <i class="bi bi-chevron-right"></i>
                 </a>
             </li>
@@ -114,7 +171,7 @@
         <i class="bi bi-info-circle fs-1 d-block mb-3"></i>
         <h4>{{ _('No posts found') }}</h4>
         <p>{{ _('Check back soon for new content!') }}</p>
-        {% if search or category %}
+        {% if search_query or selected_category %}
         <a href="{{ url_for('blog') }}" class="btn btn-primary">
             {{ _('View All Posts') }}
         </a>
@@ -122,5 +179,35 @@
     </div>
     {% endif %}
 </div>
+
+<script>
+// Initialize form variable for the submission form
+const form = new function() {
+    this.hidden_tag = function() {
+        return '<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">';
+    };
+    this.language = function(options) {
+        return `<select name="language" ${options.class ? 'class="' + options.class + '"' : ''} ${options.id ? 'id="' + options.id + '"' : ''}>
+            <option value="en">English</option>
+            <option value="pl">Polish</option>
+        </select>`;
+    };
+    this.title = function(options) {
+        return `<input type="text" name="title" ${options.class ? 'class="' + options.class + '"' : ''} ${options.id ? 'id="' + options.id + '"' : ''} ${options.placeholder ? 'placeholder="' + options.placeholder + '"' : ''} required>`;
+    };
+    this.content = function(options) {
+        return `<textarea name="content" ${options.class ? 'class="' + options.class + '"' : ''} ${options.id ? 'id="' + options.id + '"' : ''} ${options.rows ? 'rows="' + options.rows + '"' : ''} ${options.placeholder ? 'placeholder="' + options.placeholder + '"' : ''} required></textarea>`;
+    };
+    this.category = function(options) {
+        return `<input type="text" name="category" ${options.class ? 'class="' + options.class + '"' : ''} ${options.id ? 'id="' + options.id + '"' : ''} ${options.placeholder ? 'placeholder="' + options.placeholder + '"' : ''}>`;
+    };
+    this.author_name = function(options) {
+        return `<input type="text" name="author_name" ${options.class ? 'class="' + options.class + '"' : ''} ${options.id ? 'id="' + options.id + '"' : ''} ${options.placeholder ? 'placeholder="' + options.placeholder + '"' : ''}>`;
+    };
+    this.author_email = function(options) {
+        return `<input type="email" name="author_email" ${options.class ? 'class="' + options.class + '"' : ''} ${options.id ? 'id="' + options.id + '"' : ''} ${options.placeholder ? 'placeholder="' + options.placeholder + '"' : ''}>`;
+    };
+};
+</script>
 {% endblock %}
 <script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

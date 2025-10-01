@@ -105,7 +105,7 @@
                             <tbody>
                                 {% for post in recent_posts %}
                                 <tr>
-                                    <td>{{ post.title_en }}</td>
+                                    <td>{{ post.title_en if post.title_en and post.title_en != 'Pending Translation' else post.title_pl }}</td>
                                     <td>
                                         <span class="badge bg-{{ 'success' if post.status == 'published' else 'secondary' }}">
                                             {{ post.status }}
@@ -185,7 +185,7 @@
                         <tbody>
                             {% for post in pending_posts_list %}
                             <tr>
-                                <td>{{ post.title_en }}</td>
+                                <td>{{ post.title_en if post.title_en and post.title_en != 'Pending Translation' else post.title_pl }}</td>
                                 <td>{{ post.category_en or '-' }}</td>
                                 <td>{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                                 <td>

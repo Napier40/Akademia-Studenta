@@ -37,6 +37,8 @@ def register_routes(app):
     @app.route('/blog')
     def blog():
         """Blog listing page with pagination and search"""
+        from forms import CustomerBlogPostForm
+        
         page = request.args.get('page', 1, type=int)
         per_page = 10
         
@@ -96,13 +98,17 @@ def register_routes(app):
             categories = db.session.query(BlogPost.category_en).distinct().all()
             categories = [cat[0] for cat in categories if cat[0]]
         
+        # Create customer blog submission form
+        form = CustomerBlogPostForm()
+        
         return render_template(
             'blog.html',
             posts=posts,
             pagination=pagination,
             search_query=search_query,
             selected_category=category,
-            categories=categories
+            categories=categories,
+            form=form
         )
     
     

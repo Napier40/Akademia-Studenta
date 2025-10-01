@@ -50,7 +50,13 @@ class BlogPost(db.Model):
         db.String(20), 
         default='draft',
         nullable=False
-    )  # draft, published, archived
+    )  # draft, published, archived, pending
+    
+    # Customer submission tracking
+    is_customer_post = db.Column(db.Boolean, default=False)  # True if submitted by customer
+    customer_language = db.Column(db.String(2))  # 'en' or 'pl' - language customer submitted in
+    customer_name = db.Column(db.String(100))  # Optional customer name
+    customer_email = db.Column(db.String(120))  # Optional customer email
     
     # View counter
     views_count = db.Column(db.Integer, default=0)
@@ -187,6 +193,10 @@ class ContactInquiry(db.Model):
         default='new',
         nullable=False
     )  # new, in_progress, resolved, closed
+    
+    # Admin reply functionality
+    admin_reply = db.Column(db.Text)  # Admin's reply to customer
+    replied_at = db.Column(db.DateTime)  # When admin replied
     
     # Newsletter subscription
     subscribe_newsletter = db.Column(db.Boolean, default=False)

@@ -8,64 +8,103 @@
     <div class="btn-group">
         <a href="{{ url_for('admin_inquiries', status='all') }}" class="btn btn-sm btn-outline-secondary {{ 'active' if status_filter == 'all' else '' }}">All</a>
         <a href="{{ url_for('admin_inquiries', status='new') }}" class="btn btn-sm btn-outline-primary {{ 'active' if status_filter == 'new' else '' }}">New</a>
+        <a href="{{ url_for('admin_inquiries', status='replied') }}" class="btn btn-sm btn-outline-info {{ 'active' if status_filter == 'replied' else '' }}">Replied</a>
         <a href="{{ url_for('admin_inquiries', status='in_progress') }}" class="btn btn-sm btn-outline-warning {{ 'active' if status_filter == 'in_progress' else '' }}">In Progress</a>
         <a href="{{ url_for('admin_inquiries', status='resolved') }}" class="btn btn-sm btn-outline-success {{ 'active' if status_filter == 'resolved' else '' }}">Resolved</a>
     </div>
 </div>
 
 {% if inquiries.items %}
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Subject</th>
-                <th>Message</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for inquiry in inquiries.items %}
-            <tr>
-                <td>{{ inquiry.name }}</td>
-                <td>
-                    <a href="mailto:{{ inquiry.email }}">{{ inquiry.email }}</a><br>
-                    {% if inquiry.phone %}
-                        <small class="text-muted">{{ inquiry.phone }}</small>
-                    {% endif %}
-                </td>
-                <td>{{ inquiry.subject }}</td>
-                <td>{{ inquiry.message[:100] }}...</td>
-                <td>
-                    <span class="badge bg-{{ 'primary' if inquiry.status == 'new' else 'warning' if inquiry.status == 'in_progress' else 'success' }}">
-                        {{ inquiry.status.replace('_', ' ').title() }}
-                    </span>
-                    {% if inquiry.subscribe_newsletter %}
-                        <br><small class="text-muted">📧 Newsletter</small>
-                    {% endif %}
-                </td>
-                <td>{{ inquiry.created_at.strftime('%Y-%m-%d') }}</td>
-                <td>
+<div class="accordion" id="inquiriesAccordion">
+    {% for inquiry in inquiries.items %}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{ inquiry.id }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ inquiry.id }}">
+                <div class="d-flex justify-content-between w-100 me-3">
+                    <div>
+                        <strong>{{ inquiry.name }}</strong> - {{ inquiry.subject }}
+                        <small class="text-muted ms-2">{{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                    </div>
+                    <div>
+                        <span class="badge bg-{{ 'primary' if inquiry.status == 'new' else 'info' if inquiry.status == 'replied' else 'warning' if inquiry.status == 'in_progress' else 'success' }}">
+                            {{ inquiry.status.replace('_', ' ').title() }}
+                        </span>
+                    </div>
+                </div>
+            </button>
+        </h2>
+        <div id="collapse{{ inquiry.id }}" class="accordion-collapse collapse" data-bs-parent="#inquiriesAccordion">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Contact Information</h6>
+                        <p>
+                            <strong>Email:</strong> <a href="mailto:{{ inquiry.email }}">{{ inquiry.email }}</a><br>
+                            {% if inquiry.phone %}
+                            <strong>Phone:</strong> {{ inquiry.phone }}<br>
+                            {% endif %}
+                            {% if inquiry.subscribe_newsletter %}
+                            <span class="badge bg-info">📧 Newsletter Subscriber</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Message Details</h6>
+                        <p>
+                            <strong>Subject:</strong> {{ inquiry.subject }}<br>
+                            <strong>IP Address:</strong> {{ inquiry.ip_address or 'N/A' }}
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-3">
+                    <h6>Customer Message</h6>
+                    <div class="alert alert-light">
+                        {{ inquiry.message }}
+                    </div>
+                </div>
+                
+                {% if inquiry.admin_reply %}
+                <div class="mt-3">
+                    <h6>Your Reply <small class="text-muted">({{ inquiry.replied_at.strftime('%Y-%m-%d %H:%M') if inquiry.replied_at else '' }})</small></h6>
+                    <div class="alert alert-success">
+                        {{ inquiry.admin_reply }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="mt-3">
+                    <h6>Reply to Customer</h6>
+                    <form method="POST" action="{{ url_for('admin_reply_inquiry', inquiry_id=inquiry.id) }}">
+                        <div class="mb-3">
+                            <textarea name="reply" class="form-control" rows="4" placeholder="Type your reply here..." required>{{ inquiry.admin_reply or '' }}</textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send"></i> {{ 'Update Reply' if inquiry.admin_reply else 'Send Reply' }}
+                            </button>
+                            {% if inquiry.status != 'resolved' %}
+                            <button type="button" class="btn btn-success" onclick="document.getElementById('resolveForm{{ inquiry.id }}').submit()">
+                                <i class="bi bi-check-circle"></i> Mark as Resolved
+                            </button>
+                            {% endif %}
+                        </div>
+                    </form>
+                    
                     {% if inquiry.status != 'resolved' %}
-                    <form method="POST" action="{{ url_for('admin_resolve_inquiry', inquiry_id=inquiry.id) }}" class="d-inline">
-                        <button type="submit" class="btn btn-sm btn-success" title="Mark as Resolved">
-                            <i class="bi bi-check-circle"></i>
-                        </button>
+                    <form id="resolveForm{{ inquiry.id }}" method="POST" action="{{ url_for('admin_resolve_inquiry', inquiry_id=inquiry.id) }}" class="d-none">
                     </form>
                     {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 
 <!-- Pagination -->
 {% if inquiries.pages > 1 %}
-<nav>
+<nav class="mt-4">
     <ul class="pagination">
         {% if inquiries.has_prev %}
         <li class="page-item">

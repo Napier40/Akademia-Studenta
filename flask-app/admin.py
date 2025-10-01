@@ -292,6 +292,26 @@ def register_admin_routes(app):
         return render_template('admin/inquiries.html', inquiries=inquiries, status_filter=status_filter)
     
     
+    @app.route('/admin/inquiries/<int:inquiry_id>/reply', methods=['POST'])
+    @admin_required
+    def admin_reply_inquiry(inquiry_id):
+        """Reply to customer inquiry"""
+        inquiry = ContactInquiry.query.get_or_404(inquiry_id)
+        reply_text = request.form.get('reply')
+        
+        if reply_text:
+            inquiry.admin_reply = reply_text
+            inquiry.replied_at = datetime.utcnow()
+            inquiry.status = 'replied'
+            db.session.commit()
+            
+            flash('Reply sent successfully!', 'success')
+        else:
+            flash('Reply cannot be empty!', 'error')
+        
+        return redirect(request.referrer or url_for('admin_inquiries'))
+    
+    
     @app.route('/admin/inquiries/<int:inquiry_id>/mark-resolved', methods=['POST'])
     @admin_required
     def admin_resolve_inquiry(inquiry_id):
