@@ -15,12 +15,26 @@ def init_db(app):
     Initialize database with the Flask app
     Creates all tables if they don't exist
     """
+    import os
+    
+    # Ensure instance directory exists
+    instance_path = os.path.join(os.path.dirname(__file__), 'instance')
+    os.makedirs(instance_path, exist_ok=True)
+    
     db.init_app(app)
     
     with app.app_context():
         # Create all tables
         db.create_all()
-        print("✓ Database tables created successfully")
+        
+        # Get database path for display
+        db_uri = app.config['SQLALCHEMY_DATABASE_URI']
+        if db_uri.startswith('sqlite:///'):
+            db_path = db_uri.replace('sqlite:///', '')
+            print(f"✓ Database tables created successfully")
+            print(f"  Database location: {db_path}")
+        else:
+            print("✓ Database tables created successfully")
 
 
 class BlogPost(db.Model):
