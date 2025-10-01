@@ -1,6 +1,8 @@
-# Quick Fix for Python 3.13 Compatibility Issue
+# Quick Fix for Common Setup Issues
 
-## The Problem
+## Issue 1: Python 3.13 Compatibility (SQLAlchemy Error)
+
+### The Problem
 
 You're encountering this error:
 ```
@@ -9,9 +11,20 @@ AssertionError: Class <class 'sqlalchemy.sql.elements.SQLCoreOperations'> direct
 
 This is because SQLAlchemy 2.0.23 is not fully compatible with Python 3.13.
 
-## Solution Options
+## Issue 2: Flask-Babel API Error
 
-### Option 1: Update SQLAlchemy (Quickest)
+### The Problem
+
+You're encountering this error:
+```
+AttributeError: 'Babel' object has no attribute 'localeselector'
+```
+
+This is because Flask-Babel 4.0 changed its API and no longer uses the `@babel.localeselector` decorator.
+
+## Solution: Update All Dependencies (Fixes Both Issues)
+
+### Quick Fix (Recommended)
 
 1. **Pull the latest changes from GitHub:**
    ```powershell
@@ -24,16 +37,18 @@ This is because SQLAlchemy 2.0.23 is not fully compatible with Python 3.13.
    .venv\Scripts\activate
    ```
 
-3. **Update SQLAlchemy:**
+3. **Update all dependencies:**
    ```powershell
-   pip install --upgrade SQLAlchemy==2.0.35
+   cd flask-app
+   pip install --upgrade -r requirements.txt
    ```
 
 4. **Run the application:**
    ```powershell
-   cd flask-app
    flask run
    ```
+
+This will fix both the SQLAlchemy and Flask-Babel issues.
 
 ### Option 2: Use Python 3.12 (Recommended for Best Compatibility)
 
