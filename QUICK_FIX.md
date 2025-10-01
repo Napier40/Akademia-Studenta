@@ -1,0 +1,142 @@
+# Quick Fix for Python 3.13 Compatibility Issue
+
+## The Problem
+
+You're encountering this error:
+```
+AssertionError: Class <class 'sqlalchemy.sql.elements.SQLCoreOperations'> directly inherits TypingOnly but has additional attributes
+```
+
+This is because SQLAlchemy 2.0.23 is not fully compatible with Python 3.13.
+
+## Solution Options
+
+### Option 1: Update SQLAlchemy (Quickest)
+
+1. **Pull the latest changes from GitHub:**
+   ```powershell
+   cd C:\Users\jackj\OneDrive\Desktop\Web_Designs\Akademia-Studenta\Akademia-Studenta
+   git pull origin main
+   ```
+
+2. **Activate your virtual environment:**
+   ```powershell
+   .venv\Scripts\activate
+   ```
+
+3. **Update SQLAlchemy:**
+   ```powershell
+   pip install --upgrade SQLAlchemy==2.0.35
+   ```
+
+4. **Run the application:**
+   ```powershell
+   cd flask-app
+   flask run
+   ```
+
+### Option 2: Use Python 3.12 (Recommended for Best Compatibility)
+
+1. **Download Python 3.12:**
+   - Go to: https://www.python.org/downloads/
+   - Download Python 3.12.x (latest 3.12 version)
+   - Install it (make sure to check "Add Python to PATH")
+
+2. **Remove old virtual environment:**
+   ```powershell
+   cd C:\Users\jackj\OneDrive\Desktop\Web_Designs\Akademia-Studenta\Akademia-Studenta
+   deactivate  # if currently activated
+   rmdir /s .venv
+   ```
+
+3. **Create new virtual environment with Python 3.12:**
+   ```powershell
+   py -3.12 -m venv .venv
+   .venv\Scripts\activate
+   ```
+
+4. **Install dependencies:**
+   ```powershell
+   cd flask-app
+   pip install -r requirements.txt
+   ```
+
+5. **Initialize database:**
+   ```powershell
+   flask init-db
+   flask seed-db
+   ```
+
+6. **Compile translations:**
+   ```powershell
+   pybabel compile -d translations
+   ```
+
+7. **Run the application:**
+   ```powershell
+   flask run
+   ```
+
+### Option 3: Use Automated Setup Script (Easiest)
+
+1. **Pull latest changes:**
+   ```powershell
+   cd C:\Users\jackj\OneDrive\Desktop\Web_Designs\Akademia-Studenta\Akademia-Studenta
+   git pull origin main
+   ```
+
+2. **Run the setup script:**
+   ```powershell
+   cd flask-app
+   setup.bat
+   ```
+
+3. **Run the application:**
+   ```powershell
+   run.bat
+   ```
+
+## Verify It's Working
+
+After applying any of the above solutions, you should be able to:
+
+1. Start the server without errors
+2. Visit http://localhost:5000
+3. See the homepage
+4. Switch between English (EN) and Polish (PL) languages
+5. Navigate to different pages (Blog, Services, Contact)
+
+## If You Still Have Issues
+
+Check the detailed troubleshooting guide in:
+- `flask-app/WINDOWS_SETUP.md` - Comprehensive Windows setup guide
+- `flask-app/README.md` - General usage guide
+- `flask-app/FLASK_IMPLEMENTATION_GUIDE.md` - Detailed implementation guide
+
+## Common Next Steps After Fixing
+
+1. **Edit .env file** with your settings:
+   ```powershell
+   notepad flask-app\.env
+   ```
+
+2. **Generate a secure SECRET_KEY:**
+   ```powershell
+   python -c "import secrets; print(secrets.token_hex(32))"
+   ```
+
+3. **Add sample blog posts** (optional):
+   ```powershell
+   flask seed-db
+   ```
+
+## Need More Help?
+
+The repository now includes:
+- ✅ Updated requirements.txt with Python 3.13 compatible packages
+- ✅ Comprehensive Windows setup guide
+- ✅ Automated setup script (setup.bat)
+- ✅ Easy run script (run.bat)
+- ✅ Detailed troubleshooting documentation
+
+All files are available at: https://github.com/Napier40/Akademia-Studenta
