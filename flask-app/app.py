@@ -26,16 +26,17 @@ app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
-babel = Babel(app)
+babel = Babel()
 
 # Babel locale selector
-@babel.localeselector
 def get_locale():
     # Check if language is set in session
     if 'language' in session:
         return session['language']
     # Try to get from request
     return request.accept_languages.best_match(app.config['BABEL_SUPPORTED_LOCALES'])
+
+babel.init_app(app, locale_selector=get_locale)
 
 # ============================================
 # DATABASE MODELS
