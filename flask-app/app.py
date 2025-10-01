@@ -49,6 +49,10 @@ def get_locale():
 
 babel.init_app(app, locale_selector=get_locale)
 
+# Create tables if they don't exist
+with app.app_context():
+    db.create_all()
+
 # ============================================
 # DATABASE MODELS
 # ============================================
