@@ -1,0 +1,116 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Blog Posts</h1>
+    <a href="{{ url_for('admin_new_post') }}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> New Post
+    </a>
+</div>
+
+{% if posts.items %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title (EN)</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Views</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts.items %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>
+                    <a href="{{ url_for('blog_post', slug=post.slug) }}" target="_blank">
+                        {{ post.title_en }}
+                    </a>
+                </td>
+                <td>{{ post.category_en or '-' }}</td>
+                <td>
+                    <span class="badge bg-{{ 'success' if post.status == 'published' else 'warning' if post.status == 'draft' else 'secondary' }}">
+                        {{ post.status }}
+                    </span>
+                </td>
+                <td>{{ post.views_count }}</td>
+                <td>{{ post.created_at.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a href="{{ url_for('admin_edit_post', post_id=post.id) }}" class="btn btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ post.id }}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteModal{{ post.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirm Delete</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete "{{ post.title_en }}"?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form method="POST" action="{{ url_for('admin_delete_post', post_id=post.id) }}">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if posts.pages > 1 %}
+<nav>
+    <ul class="pagination">
+        {% if posts.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_posts', page=posts.prev_num) }}">Previous</a>
+        </li>
+        {% endif %}
+        
+        {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                <li class="page-item {{ 'active' if page_num == posts.page else '' }}">
+                    <a class="page-link" href="{{ url_for('admin_posts', page=page_num) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if posts.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_posts', page=posts.next_num) }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> No blog posts yet. <a href="{{ url_for('admin_new_post') }}">Create your first post</a>
+</div>
+{% endif %}
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

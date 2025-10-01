@@ -1,0 +1,120 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Comments{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Comments</h1>
+    <div class="btn-group">
+        <a href="{{ url_for('admin_comments', status='all') }}" class="btn btn-sm btn-outline-secondary {{ 'active' if status_filter == 'all' else '' }}">All</a>
+        <a href="{{ url_for('admin_comments', status='pending') }}" class="btn btn-sm btn-outline-warning {{ 'active' if status_filter == 'pending' else '' }}">Pending</a>
+        <a href="{{ url_for('admin_comments', status='approved') }}" class="btn btn-sm btn-outline-success {{ 'active' if status_filter == 'approved' else '' }}">Approved</a>
+        <a href="{{ url_for('admin_comments', status='rejected') }}" class="btn btn-sm btn-outline-danger {{ 'active' if status_filter == 'rejected' else '' }}">Rejected</a>
+    </div>
+</div>
+
+{% if comments.items %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>Post</th>
+                <th>Comment</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comment in comments.items %}
+            <tr>
+                <td>
+                    {{ comment.author_name or 'Anonymous' }}<br>
+                    <small class="text-muted">{{ comment.author_email or '-' }}</small>
+                </td>
+                <td>
+                    <a href="{{ url_for('blog_post', slug=comment.post.slug) }}" target="_blank">
+                        {{ comment.post.title_en[:50] }}...
+                    </a>
+                </td>
+                <td>{{ comment.content[:100] }}...</td>
+                <td>
+                    {% if comment.rating %}
+                        {% for i in range(comment.rating) %}⭐{% endfor %}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="badge bg-{{ 'warning' if comment.status == 'pending' else 'success' if comment.status == 'approved' else 'danger' }}">
+                        {{ comment.status }}
+                    </span>
+                </td>
+                <td>{{ comment.created_at.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        {% if comment.status != 'approved' %}
+                        <form method="POST" action="{{ url_for('admin_approve_comment', comment_id=comment.id) }}" class="d-inline">
+                            <button type="submit" class="btn btn-success" title="Approve">
+                                <i class="bi bi-check"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                        {% if comment.status != 'rejected' %}
+                        <form method="POST" action="{{ url_for('admin_reject_comment', comment_id=comment.id) }}" class="d-inline">
+                            <button type="submit" class="btn btn-warning" title="Reject">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                        <form method="POST" action="{{ url_for('admin_delete_comment', comment_id=comment.id) }}" class="d-inline" onsubmit="return confirm('Delete this comment?')">
+                            <button type="submit" class="btn btn-danger" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if comments.pages > 1 %}
+<nav>
+    <ul class="pagination">
+        {% if comments.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_comments', page=comments.prev_num, status=status_filter) }}">Previous</a>
+        </li>
+        {% endif %}
+        
+        {% for page_num in comments.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                <li class="page-item {{ 'active' if page_num == comments.page else '' }}">
+                    <a class="page-link" href="{{ url_for('admin_comments', page=page_num, status=status_filter) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if comments.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_comments', page=comments.next_num, status=status_filter) }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> No comments found.
+</div>
+{% endif %}
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

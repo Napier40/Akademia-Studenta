@@ -30,6 +30,10 @@ def create_app(config_class=Config):
     # Register routes
     register_routes(app)
     
+    # Register admin routes
+    from admin import register_admin_routes
+    register_admin_routes(app)
+    
     # Context processor for templates
     @app.context_processor
     def inject_language():

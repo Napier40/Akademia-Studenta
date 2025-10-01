@@ -1,0 +1,152 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Total Posts</h6>
+                        <h2 class="mb-0">{{ total_posts }}</h2>
+                    </div>
+                    <i class="bi bi-file-text" style="font-size: 2rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Published</h6>
+                        <h2 class="mb-0">{{ published_posts }}</h2>
+                    </div>
+                    <i class="bi bi-check-circle" style="font-size: 2rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Pending Comments</h6>
+                        <h2 class="mb-0">{{ pending_comments }}</h2>
+                    </div>
+                    <i class="bi bi-chat-dots" style="font-size: 2rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">New Inquiries</h6>
+                        <h2 class="mb-0">{{ new_inquiries }}</h2>
+                    </div>
+                    <i class="bi bi-envelope" style="font-size: 2rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Posts -->
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Recent Blog Posts</h5>
+                <a href="{{ url_for('admin_new_post') }}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus-circle"></i> New Post
+                </a>
+            </div>
+            <div class="card-body">
+                {% if recent_posts %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in recent_posts %}
+                                <tr>
+                                    <td>{{ post.title_en }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if post.status == 'published' else 'secondary' }}">
+                                            {{ post.status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ post.created_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin_edit_post', post_id=post.id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No blog posts yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pending Comments -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Pending Comments</h5>
+            </div>
+            <div class="card-body">
+                {% if pending_comments_list %}
+                    {% for comment in pending_comments_list %}
+                    <div class="mb-3 pb-3 border-bottom">
+                        <p class="mb-1"><strong>{{ comment.author_name or 'Anonymous' }}</strong></p>
+                        <p class="mb-2 small text-muted">{{ comment.content[:100] }}...</p>
+                        <div class="btn-group btn-group-sm">
+                            <form method="POST" action="{{ url_for('admin_approve_comment', comment_id=comment.id) }}" class="d-inline">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="bi bi-check"></i>
+                                </button>
+                            </form>
+                            <form method="POST" action="{{ url_for('admin_reject_comment', comment_id=comment.id) }}" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No pending comments.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

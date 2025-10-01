@@ -1,0 +1,101 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Contact Inquiries{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Contact Inquiries</h1>
+    <div class="btn-group">
+        <a href="{{ url_for('admin_inquiries', status='all') }}" class="btn btn-sm btn-outline-secondary {{ 'active' if status_filter == 'all' else '' }}">All</a>
+        <a href="{{ url_for('admin_inquiries', status='new') }}" class="btn btn-sm btn-outline-primary {{ 'active' if status_filter == 'new' else '' }}">New</a>
+        <a href="{{ url_for('admin_inquiries', status='in_progress') }}" class="btn btn-sm btn-outline-warning {{ 'active' if status_filter == 'in_progress' else '' }}">In Progress</a>
+        <a href="{{ url_for('admin_inquiries', status='resolved') }}" class="btn btn-sm btn-outline-success {{ 'active' if status_filter == 'resolved' else '' }}">Resolved</a>
+    </div>
+</div>
+
+{% if inquiries.items %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inquiry in inquiries.items %}
+            <tr>
+                <td>{{ inquiry.name }}</td>
+                <td>
+                    <a href="mailto:{{ inquiry.email }}">{{ inquiry.email }}</a><br>
+                    {% if inquiry.phone %}
+                        <small class="text-muted">{{ inquiry.phone }}</small>
+                    {% endif %}
+                </td>
+                <td>{{ inquiry.subject }}</td>
+                <td>{{ inquiry.message[:100] }}...</td>
+                <td>
+                    <span class="badge bg-{{ 'primary' if inquiry.status == 'new' else 'warning' if inquiry.status == 'in_progress' else 'success' }}">
+                        {{ inquiry.status.replace('_', ' ').title() }}
+                    </span>
+                    {% if inquiry.subscribe_newsletter %}
+                        <br><small class="text-muted">📧 Newsletter</small>
+                    {% endif %}
+                </td>
+                <td>{{ inquiry.created_at.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    {% if inquiry.status != 'resolved' %}
+                    <form method="POST" action="{{ url_for('admin_resolve_inquiry', inquiry_id=inquiry.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-success" title="Mark as Resolved">
+                            <i class="bi bi-check-circle"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if inquiries.pages > 1 %}
+<nav>
+    <ul class="pagination">
+        {% if inquiries.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_inquiries', page=inquiries.prev_num, status=status_filter) }}">Previous</a>
+        </li>
+        {% endif %}
+        
+        {% for page_num in inquiries.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                <li class="page-item {{ 'active' if page_num == inquiries.page else '' }}">
+                    <a class="page-link" href="{{ url_for('admin_inquiries', page=page_num, status=status_filter) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if inquiries.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_inquiries', page=inquiries.next_num, status=status_filter) }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> No inquiries found.
+</div>
+{% endif %}
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

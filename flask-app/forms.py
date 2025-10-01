@@ -107,3 +107,75 @@ class BlogSearchForm(FlaskForm):
         choices=[('', 'All Categories')],
         validators=[Optional()]
     )
+
+
+class BlogPostForm(FlaskForm):
+    """
+    Form for creating/editing blog posts
+    """
+    title_en = StringField(
+        'Title (English)',
+        validators=[
+            DataRequired(message='English title is required'),
+            Length(min=5, max=200)
+        ]
+    )
+    
+    title_pl = StringField(
+        'Title (Polish)',
+        validators=[
+            DataRequired(message='Polish title is required'),
+            Length(min=5, max=200)
+        ]
+    )
+    
+    content_en = TextAreaField(
+        'Content (English)',
+        validators=[
+            DataRequired(message='English content is required'),
+            Length(min=50)
+        ]
+    )
+    
+    content_pl = TextAreaField(
+        'Content (Polish)',
+        validators=[
+            DataRequired(message='Polish content is required'),
+            Length(min=50)
+        ]
+    )
+    
+    excerpt_en = TextAreaField(
+        'Excerpt (English)',
+        validators=[Optional(), Length(max=500)]
+    )
+    
+    excerpt_pl = TextAreaField(
+        'Excerpt (Polish)',
+        validators=[Optional(), Length(max=500)]
+    )
+    
+    category_en = StringField(
+        'Category (English)',
+        validators=[Optional(), Length(max=100)]
+    )
+    
+    category_pl = StringField(
+        'Category (Polish)',
+        validators=[Optional(), Length(max=100)]
+    )
+    
+    featured_image = StringField(
+        'Featured Image URL',
+        validators=[Optional(), Length(max=500)]
+    )
+    
+    status = SelectField(
+        'Status',
+        choices=[
+            ('draft', 'Draft'),
+            ('published', 'Published'),
+            ('archived', 'Archived')
+        ],
+        validators=[DataRequired()]
+    )
