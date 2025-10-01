@@ -61,7 +61,7 @@ This means the database tables haven't been created yet. You need to initialize 
    
    This will:
    - Create all database tables
-   - Optionally add sample blog posts (type 'y' when prompted)
+   - Optionally add sample blog posts
    - Set up the database structure
 
 5. **Compile translations:**
@@ -104,7 +104,8 @@ This will fix the SQLAlchemy, Flask-Babel, and database initialization issues.
 
 5. **Initialize database:**
    ```powershell
-   python init_db.py
+   flask init-db
+   flask seed-db
    ```
 
 6. **Compile translations:**
@@ -130,12 +131,6 @@ This will fix the SQLAlchemy, Flask-Babel, and database initialization issues.
    cd flask-app
    setup.bat
    ```
-   
-   The script will automatically:
-   - Create virtual environment
-   - Install dependencies
-   - Initialize database
-   - Compile translations
 
 3. **Run the application:**
    ```powershell
@@ -146,57 +141,15 @@ This will fix the SQLAlchemy, Flask-Babel, and database initialization issues.
 
 After applying any of the above solutions, you should be able to:
 
-1. ✅ Start the server without errors
-2. ✅ Visit http://localhost:5000
-3. ✅ See the homepage with sample blog posts
-4. ✅ Switch between English (EN) and Polish (PL) languages
-5. ✅ Navigate to different pages (Blog, Services, Contact)
-6. ✅ View blog posts and leave comments
-
-## Database Initialization Details
-
-The `init_db.py` script will:
-- Create all necessary database tables (blog_posts, comments, contact_inquiries)
-- Ask if you want to add sample data
-- Add 3 sample blog posts in both English and Polish if you choose 'y'
-
-Sample posts include:
-1. "Getting Started with Our Services" / "Rozpoczęcie pracy z naszymi usługami"
-2. "5 Tips for Business Growth" / "5 wskazówek dotyczących rozwoju firmy"
-3. "Industry Trends 2025" / "Trendy branżowe 2025"
+1. Start the server without errors
+2. Visit http://localhost:5000
+3. See the homepage
+4. Switch between English (EN) and Polish (PL) languages
+5. Navigate to different pages (Blog, Services, Contact)
 
 ## If You Still Have Issues
 
-### Issue: "python: command not found"
-**Solution:** Use `py` instead of `python`:
-```powershell
-py init_db.py
-```
-
-### Issue: "No module named 'app'"
-**Solution:** Make sure you're in the flask-app directory:
-```powershell
-cd flask-app
-python init_db.py
-```
-
-### Issue: Database already exists
-**Solution:** Delete the old database and recreate:
-```powershell
-del instance\website.db
-python init_db.py
-```
-
-### Issue: Translations not working
-**Solution:** Recompile translations:
-```powershell
-pip install Babel
-pybabel compile -d translations
-```
-
-## Check Detailed Guides
-
-For more comprehensive troubleshooting:
+Check the detailed troubleshooting guide in:
 - `flask-app/WINDOWS_SETUP.md` - Comprehensive Windows setup guide
 - `flask-app/README.md` - General usage guide
 - `flask-app/FLASK_IMPLEMENTATION_GUIDE.md` - Detailed implementation guide
@@ -213,53 +166,18 @@ For more comprehensive troubleshooting:
    python -c "import secrets; print(secrets.token_hex(32))"
    ```
 
-3. **Add your own blog posts:**
-   - Edit the database directly
-   - Or create an admin interface (see implementation guide)
-
-## Summary of Fixes
-
-| Issue | Fix |
-|-------|-----|
-| SQLAlchemy Python 3.13 | Updated to SQLAlchemy 2.0.35 |
-| Flask-Babel API | Updated to use locale_selector parameter |
-| Database not initialized | Run `python init_db.py` |
-| Missing translations | Run `pybabel compile -d translations` |
+3. **Add sample blog posts** (optional):
+   ```powershell
+   flask seed-db
+   ```
 
 ## Need More Help?
 
 The repository now includes:
 - ✅ Updated requirements.txt with Python 3.13 compatible packages
-- ✅ New init_db.py script for easy database setup
 - ✅ Comprehensive Windows setup guide
 - ✅ Automated setup script (setup.bat)
 - ✅ Easy run script (run.bat)
 - ✅ Detailed troubleshooting documentation
 
 All files are available at: https://github.com/Napier40/Akademia-Studenta
-
-## Quick Command Reference
-
-```powershell
-# Pull latest changes
-git pull origin main
-
-# Activate virtual environment
-.venv\Scripts\activate
-
-# Update dependencies
-pip install --upgrade -r requirements.txt
-
-# Initialize database
-python init_db.py
-
-# Compile translations
-pybabel compile -d translations
-
-# Run application
-flask run
-
-# Or use the automated scripts
-setup.bat  # First time setup
-run.bat    # Run the application
-```

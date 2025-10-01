@@ -83,8 +83,7 @@ if exist .env (
 echo.
 
 echo Step 6: Initializing database...
-set FLASK_APP=app.py
-flask init-db
+python init_db.py
 if errorlevel 1 (
     echo ERROR: Failed to initialize database
     pause
