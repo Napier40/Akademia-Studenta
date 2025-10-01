@@ -142,6 +142,19 @@
                             {{ _('Contact') }}
                         </a>
                     </li>
+                       {% if session.get('is_admin') %}
+                       <li class="nav-item">
+                           <a class="nav-link text-primary" href="{{ url_for('admin_dashboard') }}">
+                               <i class="bi bi-shield-lock"></i> Admin
+                           </a>
+                       </li>
+                       {% else %}
+                       <li class="nav-item">
+                           <a class="nav-link text-muted" href="{{ url_for('admin_login') }}" title="Admin Login">
+                               <i class="bi bi-person-circle"></i>
+                           </a>
+                       </li>
+                       {% endif %}
                     <li class="nav-item ms-3">
                         <div class="language-switcher">
                             <a href="{{ url_for('set_language', language='en') }}" 
@@ -198,6 +211,19 @@
                         <li><a href="{{ url_for('blog') }}">{{ _('Blog') }}</a></li>
                         <li><a href="{{ url_for('contact') }}">{{ _('Contact') }}</a></li>
                     </ul>
+                       {% if session.get('is_admin') %}
+                       <li class=&quot;nav-item&quot;>
+                           <a class=&quot;nav-link text-primary&quot; href=&quot;{{ url_for('admin_dashboard') }}&quot;>
+                               <i class=&quot;bi bi-shield-lock&quot;></i> Admin
+                           </a>
+                       </li>
+                       {% else %}
+                       <li class=&quot;nav-item&quot;>
+                           <a class=&quot;nav-link text-muted&quot; href=&quot;{{ url_for('admin_login') }}&quot; title=&quot;Admin Login&quot;>
+                               <i class=&quot;bi bi-person-circle&quot;></i>
+                           </a>
+                       </li>
+                       {% endif %}
                 </div>
                 <div class="col-md-3 mb-4">
                     <h5>{{ _('Contact Info') }}</h5>
