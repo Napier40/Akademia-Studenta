@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ _('Your Business') }}{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        main {
+            flex: 1;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0a58ca 100%);
+            color: white;
+            padding: 5rem 0;
+        }
+        
+        .service-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .blog-card {
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .blog-card img {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .comment-card {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .rating-stars {
+            color: #ffc107;
+        }
+        
+        .language-switcher {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .language-switcher a {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            text-decoration: none;
+        }
+        
+        .language-switcher a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        footer {
+            background-color: #212529;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+        
+        footer a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: white;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand text-primary" href="{{ url_for('index') }}">
+                <i class="bi bi-building"></i> {{ _('YourBrand') }}
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">
+                            {{ _('Home') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'services' %}active{% endif %}" href="{{ url_for('services') }}">
+                            {{ _('Services') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint in ['blog', 'blog_post'] %}active{% endif %}" href="{{ url_for('blog') }}">
+                            {{ _('Blog') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">
+                            {{ _('Contact') }}
+                        </a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <div class="language-switcher">
+                            <a href="{{ url_for('set_language', lang='en') }}" 
+                               class="{% if get_locale() == 'en' %}active{% endif %}"
+                               title="English">
+                                EN
+                            </a>
+                            <a href="{{ url_for('set_language', lang='pl') }}" 
+                               class="{% if get_locale() == 'pl' %}active{% endif %}"
+                               title="Polski">
+                                PL
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5>{{ _('About Us') }}</h5>
+                    <p class="text-muted">
+                        {{ _('We provide professional services to help businesses grow and succeed.') }}
+                    </p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>{{ _('Quick Links') }}</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('index') }}">{{ _('Home') }}</a></li>
+                        <li><a href="{{ url_for('services') }}">{{ _('Services') }}</a></li>
+                        <li><a href="{{ url_for('blog') }}">{{ _('Blog') }}</a></li>
+                        <li><a href="{{ url_for('contact') }}">{{ _('Contact') }}</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>{{ _('Contact Info') }}</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="bi bi-envelope"></i> info@yourbusiness.com</li>
+                        <li><i class="bi bi-telephone"></i> +48 123 456 789</li>
+                        <li><i class="bi bi-geo-alt"></i> {{ _('Warsaw, Poland') }}</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>{{ _('Follow Us') }}</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="fs-4"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="fs-4"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="fs-4"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="fs-4"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center text-muted">
+                <p>&copy; 2025 {{ _('YourBrand') }}. {{ _('All rights reserved.') }}</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

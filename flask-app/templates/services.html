@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Services') }} - {{ _('YourBrand') }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">{{ _('Our Services') }}</h1>
+        <p class="lead">{{ _('Comprehensive solutions designed to help your business thrive') }}</p>
+    </div>
+</section>
+
+<!-- Services Detail -->
+<div class="container py-5">
+    <!-- Consulting Services -->
+    <section id="consulting" class="mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800" 
+                     class="img-fluid rounded shadow" 
+                     alt="{{ _('Consulting Services') }}">
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                    <i class="bi bi-check-circle text-primary fs-1"></i>
+                </div>
+                <h2 class="mb-3">{{ _('Consulting Services') }}</h2>
+                <p class="lead text-muted">
+                    {{ _('Expert guidance to help you make informed business decisions and achieve your goals.') }}
+                </p>
+                <p>
+                    {{ _('Our consulting services provide you with strategic insights and actionable recommendations. We work closely with your team to understand your unique challenges and develop customized solutions that drive results.') }}
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Strategic Planning') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Business Analysis') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Process Optimization') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Risk Assessment') }}</li>
+                </ul>
+                <a href="{{ url_for('contact') }}" class="btn btn-primary mt-3">
+                    {{ _('Get Started') }} <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <hr class="my-5">
+
+    <!-- Implementation -->
+    <section id="implementation" class="mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800" 
+                     class="img-fluid rounded shadow" 
+                     alt="{{ _('Implementation') }}">
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                    <i class="bi bi-lightning text-primary fs-1"></i>
+                </div>
+                <h2 class="mb-3">{{ _('Implementation') }}</h2>
+                <p class="lead text-muted">
+                    {{ _('Seamless execution of strategies and solutions with minimal disruption to your operations.') }}
+                </p>
+                <p>
+                    {{ _('We handle the entire implementation process from start to finish. Our experienced team ensures that new systems, processes, and strategies are deployed efficiently and effectively, with comprehensive training and support.') }}
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Project Management') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('System Integration') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Team Training') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Quality Assurance') }}</li>
+                </ul>
+                <a href="{{ url_for('contact') }}" class="btn btn-primary mt-3">
+                    {{ _('Get Started') }} <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <hr class="my-5">
+
+    <!-- Ongoing Support -->
+    <section id="support" class="mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800" 
+                     class="img-fluid rounded shadow" 
+                     alt="{{ _('Ongoing Support') }}">
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                    <i class="bi bi-headset text-primary fs-1"></i>
+                </div>
+                <h2 class="mb-3">{{ _('Ongoing Support') }}</h2>
+                <p class="lead text-muted">
+                    {{ _('Continuous assistance and maintenance to ensure long-term success and growth.') }}
+                </p>
+                <p>
+                    {{ _('Our commitment to your success extends beyond implementation. We provide ongoing support, regular check-ins, and continuous optimization to ensure your systems and processes continue to deliver value over time.') }}
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('24/7 Technical Support') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Regular Maintenance') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Performance Monitoring') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ _('Continuous Improvement') }}</li>
+                </ul>
+                <a href="{{ url_for('contact') }}" class="btn btn-primary mt-3">
+                    {{ _('Get Started') }} <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- CTA Section -->
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="mb-3">{{ _('Ready to Transform Your Business?') }}</h2>
+        <p class="lead text-muted mb-4">
+            {{ _('Let us help you achieve your goals with our comprehensive services') }}
+        </p>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+            {{ _('Contact Us Today') }}
+        </a>
+    </div>
+</section>
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

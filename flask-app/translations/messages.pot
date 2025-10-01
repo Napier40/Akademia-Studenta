@@ -1,0 +1,333 @@
+# Translations template for Flask Website.
+# Copyright (C) 2025
+# This file is distributed under the same license as the Flask Website project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Flask Website 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-01-01 12:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.13.1\n"
+
+# Navigation
+msgid "YourBrand"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Services"
+msgstr ""
+
+msgid "Blog"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+# Homepage
+msgid "Welcome to Our Professional Services"
+msgstr ""
+
+msgid "Delivering excellence and innovation to help your business grow"
+msgstr ""
+
+msgid "Explore Services"
+msgstr ""
+
+msgid "Get in Touch"
+msgstr ""
+
+msgid "Our Services"
+msgstr ""
+
+msgid "Comprehensive solutions tailored to your needs"
+msgstr ""
+
+msgid "Consulting Services"
+msgstr ""
+
+msgid "Expert guidance to help you make informed business decisions and achieve your goals."
+msgstr ""
+
+msgid "Learn More"
+msgstr ""
+
+msgid "Implementation"
+msgstr ""
+
+msgid "Seamless execution of strategies and solutions with minimal disruption to your operations."
+msgstr ""
+
+msgid "Ongoing Support"
+msgstr ""
+
+msgid "Continuous assistance and maintenance to ensure long-term success and growth."
+msgstr ""
+
+msgid "Why Choose Us"
+msgstr ""
+
+msgid "10+ Years Experience"
+msgstr ""
+
+msgid "Proven track record of delivering exceptional results"
+msgstr ""
+
+msgid "Client-Focused"
+msgstr ""
+
+msgid "Your success is our priority"
+msgstr ""
+
+msgid "Innovative Solutions"
+msgstr ""
+
+msgid "Cutting-edge approaches to modern challenges"
+msgstr ""
+
+msgid "Transparent Process"
+msgstr ""
+
+msgid "Clear communication every step of the way"
+msgstr ""
+
+msgid "Latest from Our Blog"
+msgstr ""
+
+msgid "Insights, tips, and industry news"
+msgstr ""
+
+msgid "Read More"
+msgstr ""
+
+msgid "View All Posts"
+msgstr ""
+
+msgid "Ready to Get Started?"
+msgstr ""
+
+msgid "Contact us today to learn how we can help your business succeed"
+msgstr ""
+
+msgid "Contact Us"
+msgstr ""
+
+# Blog
+msgid "Search posts..."
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "All Categories"
+msgstr ""
+
+msgid "Business Tips"
+msgstr ""
+
+msgid "Technology"
+msgstr ""
+
+msgid "Case Studies"
+msgstr ""
+
+msgid "views"
+msgstr ""
+
+msgid "No posts found"
+msgstr ""
+
+msgid "Check back soon for new content!"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+# Blog Post
+msgid "Customer Feedback"
+msgstr ""
+
+msgid "Anonymous"
+msgstr ""
+
+msgid "No comments yet. Be the first to share your feedback!"
+msgstr ""
+
+msgid "Leave Your Feedback"
+msgstr ""
+
+msgid "Post anonymously"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Rating (Optional)"
+msgstr ""
+
+msgid "No rating"
+msgstr ""
+
+msgid "Your Feedback"
+msgstr ""
+
+msgid "Share your thoughts..."
+msgstr ""
+
+msgid "Submit Feedback"
+msgstr ""
+
+msgid "Thank you for your feedback! Your comment is pending approval."
+msgstr ""
+
+msgid "Name and email are required for non-anonymous comments."
+msgstr ""
+
+msgid "Please correct the errors in the form."
+msgstr ""
+
+# Contact
+msgid "Get in Touch"
+msgstr ""
+
+msgid "We'd love to hear from you. Send us a message and we'll respond as soon as possible."
+msgstr ""
+
+msgid "Contact Information"
+msgstr ""
+
+msgid "Have a question or want to work together? Reach out to us using the contact form or through any of the methods below."
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Warsaw, Poland"
+msgstr ""
+
+msgid "Business Hours"
+msgstr ""
+
+msgid "Monday - Friday: 9:00 AM - 6:00 PM"
+msgstr ""
+
+msgid "Saturday: 10:00 AM - 4:00 PM"
+msgstr ""
+
+msgid "Sunday: Closed"
+msgstr ""
+
+msgid "Send us a Message"
+msgstr ""
+
+msgid "Your name"
+msgstr ""
+
+msgid "your@email.com"
+msgstr ""
+
+msgid "Optional"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Tell us how we can help you..."
+msgstr ""
+
+msgid "Send Message"
+msgstr ""
+
+msgid "Your message has been sent successfully. We will get back to you soon!"
+msgstr ""
+
+# Services
+msgid "Comprehensive solutions designed to help your business thrive"
+msgstr ""
+
+msgid "Strategic Planning"
+msgstr ""
+
+msgid "Business Analysis"
+msgstr ""
+
+msgid "Process Optimization"
+msgstr ""
+
+msgid "Risk Assessment"
+msgstr ""
+
+msgid "Get Started"
+msgstr ""
+
+msgid "Project Management"
+msgstr ""
+
+msgid "System Integration"
+msgstr ""
+
+msgid "Team Training"
+msgstr ""
+
+msgid "Quality Assurance"
+msgstr ""
+
+msgid "24/7 Technical Support"
+msgstr ""
+
+msgid "Regular Maintenance"
+msgstr ""
+
+msgid "Performance Monitoring"
+msgstr ""
+
+msgid "Continuous Improvement"
+msgstr ""
+
+msgid "Ready to Transform Your Business?"
+msgstr ""
+
+msgid "Let us help you achieve your goals with our comprehensive services"
+msgstr ""
+
+msgid "Contact Us Today"
+msgstr ""
+
+# Footer
+msgid "About Us"
+msgstr ""
+
+msgid "We provide professional services to help businesses grow and succeed."
+msgstr ""
+
+msgid "Quick Links"
+msgstr ""
+
+msgid "Contact Info"
+msgstr ""
+
+msgid "Follow Us"
+msgstr ""
+
+msgid "All rights reserved."
+msgstr ""

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Contact') }} - {{ _('YourBrand') }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-2">{{ _('Get in Touch') }}</h1>
+    <p class="text-center text-muted mb-5">
+        {{ _("We'd love to hear from you. Send us a message and we'll respond as soon as possible.") }}
+    </p>
+    
+    <div class="row">
+        <!-- Contact Information -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">{{ _('Contact Information') }}</h4>
+                    <p class="text-muted">
+                        {{ _('Have a question or want to work together? Reach out to us using the contact form or through any of the methods below.') }}
+                    </p>
+                    
+                    <div class="mt-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="bi bi-envelope text-primary fs-5"></i>
+                            </div>
+                            <div>
+                                <strong>{{ _('Email') }}</strong>
+                                <p class="mb-0 text-muted">info@yourbusiness.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="bi bi-telephone text-primary fs-5"></i>
+                            </div>
+                            <div>
+                                <strong>{{ _('Phone') }}</strong>
+                                <p class="mb-0 text-muted">+48 123 456 789</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="bi bi-geo-alt text-primary fs-5"></i>
+                            </div>
+                            <div>
+                                <strong>{{ _('Address') }}</strong>
+                                <p class="mb-0 text-muted">
+                                    ul. Przykładowa 123<br>
+                                    00-001 {{ _('Warsaw, Poland') }}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="bi bi-clock text-primary fs-5"></i>
+                            </div>
+                            <div>
+                                <strong>{{ _('Business Hours') }}</strong>
+                                <p class="mb-0 text-muted">
+                                    {{ _('Monday - Friday: 9:00 AM - 6:00 PM') }}<br>
+                                    {{ _('Saturday: 10:00 AM - 4:00 PM') }}<br>
+                                    {{ _('Sunday: Closed') }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Form -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4">{{ _('Send us a Message') }}</h4>
+                    
+                    <form method="POST" action="{{ url_for('contact') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.name.label(class="form-label") }}
+                                {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else ""), 
+                                            placeholder=_("Your name")) }}
+                                {% if form.name.errors %}
+                                <div class="invalid-feedback">{{ form.name.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.email.label(class="form-label") }}
+                                {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), 
+                                             placeholder=_("your@email.com")) }}
+                                {% if form.email.errors %}
+                                <div class="invalid-feedback">{{ form.email.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.phone.label(class="form-label") }}
+                                {{ form.phone(class="form-control", placeholder=_("Optional")) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.subject.label(class="form-label") }}
+                                {{ form.subject(class="form-control", placeholder=_("Optional")) }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.message.label(class="form-label") }}
+                            {{ form.message(class="form-control" + (" is-invalid" if form.message.errors else ""), 
+                                           rows="6", 
+                                           placeholder=_("Tell us how we can help you...")) }}
+                            {% if form.message.errors %}
+                            <div class="invalid-feedback">{{ form.message.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-send"></i> {{ _('Send Message') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

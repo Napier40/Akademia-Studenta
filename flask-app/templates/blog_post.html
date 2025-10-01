@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.get_title(get_locale()) }} - {{ _('Blog') }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Post Header -->
+            <article>
+                {% if post.featured_image %}
+                <img src="{{ post.featured_image }}" class="img-fluid rounded mb-4" alt="{{ post.get_title(get_locale()) }}">
+                {% endif %}
+                
+                <div class="d-flex justify-content-between align-items-center mb-3 text-muted">
+                    <div>
+                        <i class="bi bi-calendar"></i> {{ post.published_at|format_date }}
+                        {% if post.get_category(get_locale()) %}
+                        <span class="mx-2">•</span>
+                        <span class="badge bg-primary">{{ post.get_category(get_locale()) }}</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <i class="bi bi-eye"></i> {{ post.views_count }} {{ _('views') }}
+                    </div>
+                </div>
+                
+                <h1 class="mb-4">{{ post.get_title(get_locale()) }}</h1>
+                
+                <div class="post-content">
+                    {{ post.get_content(get_locale())|safe }}
+                </div>
+            </article>
+            
+            <hr class="my-5">
+            
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h3 class="mb-4">
+                    {{ _('Customer Feedback') }}
+                    {% if comments %}
+                    <span class="badge bg-secondary">{{ comments|length }}</span>
+                    {% endif %}
+                </h3>
+                
+                <!-- Existing Comments -->
+                {% if comments %}
+                <div class="mb-5">
+                    {% for comment in comments %}
+                    <div class="card comment-card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                         style="width: 48px; height: 48px; font-weight: bold;">
+                                        {% if comment.is_anonymous %}
+                                        A
+                                        {% else %}
+                                        {{ comment.author_name[0]|upper }}
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <strong>
+                                            {% if comment.is_anonymous %}
+                                            {{ _('Anonymous') }}
+                                            {% else %}
+                                            {{ comment.author_name }}
+                                            {% endif %}
+                                        </strong>
+                                        <br>
+                                        <small class="text-muted">{{ comment.created_at|format_date }}</small>
+                                    </div>
+                                </div>
+                                {% if comment.rating %}
+                                <div class="rating-stars">
+                                    {% for i in range(1, 6) %}
+                                    <i class="bi bi-star{% if i <= comment.rating %}-fill{% endif %}"></i>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <p class="mb-0">{{ comment.content }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> {{ _('No comments yet. Be the first to share your feedback!') }}
+                </div>
+                {% endif %}
+                
+                <!-- Comment Form -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">{{ _('Leave Your Feedback') }}</h4>
+                        
+                        <form method="POST" action="{{ url_for('submit_comment', slug=post.slug) }}">
+                            {{ form.hidden_tag() }}
+                            
+                            <!-- Anonymous Checkbox -->
+                            <div class="form-check mb-3">
+                                {{ form.is_anonymous(class="form-check-input", id="isAnonymous") }}
+                                {{ form.is_anonymous.label(class="form-check-label") }}
+                            </div>
+                            
+                            <!-- Name and Email (hidden when anonymous) -->
+                            <div id="userInfoFields">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        {{ form.author_name.label(class="form-label") }}
+                                        {{ form.author_name(class="form-control", placeholder=_("Your name")) }}
+                                        {% if form.author_name.errors %}
+                                        <div class="text-danger small">{{ form.author_name.errors[0] }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form.author_email.label(class="form-label") }}
+                                        {{ form.author_email(class="form-control", placeholder=_("your@email.com")) }}
+                                        {% if form.author_email.errors %}
+                                        <div class="text-danger small">{{ form.author_email.errors[0] }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Rating -->
+                            <div class="mb-3">
+                                {{ form.rating.label(class="form-label") }}
+                                {{ form.rating(class="form-select") }}
+                            </div>
+                            
+                            <!-- Comment Content -->
+                            <div class="mb-3">
+                                {{ form.content.label(class="form-label") }}
+                                {{ form.content(class="form-control", rows="5", placeholder=_("Share your thoughts...")) }}
+                                {% if form.content.errors %}
+                                <div class="text-danger small">{{ form.content.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send"></i> {{ _('Submit Feedback') }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Toggle user info fields based on anonymous checkbox
+    document.addEventListener('DOMContentLoaded', function() {
+        const anonymousCheckbox = document.getElementById('isAnonymous');
+        const userInfoFields = document.getElementById('userInfoFields');
+        const nameField = document.getElementById('author_name');
+        const emailField = document.getElementById('author_email');
+        
+        function toggleUserFields() {
+            if (anonymousCheckbox.checked) {
+                userInfoFields.style.display = 'none';
+                nameField.removeAttribute('required');
+                emailField.removeAttribute('required');
+            } else {
+                userInfoFields.style.display = 'block';
+                nameField.setAttribute('required', 'required');
+                emailField.setAttribute('required', 'required');
+            }
+        }
+        
+        anonymousCheckbox.addEventListener('change', toggleUserFields);
+        toggleUserFields(); // Initial state
+    });
+</script>
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

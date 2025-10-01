@@ -1,0 +1,334 @@
+# Polish translations for Flask Website.
+# Copyright (C) 2025
+# This file is distributed under the same license as the Flask Website project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Flask Website 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-01-01 12:00+0000\n"
+"PO-Revision-Date: 2025-01-01 12:00+0000\n"
+"Last-Translator: \n"
+"Language: pl\n"
+"Language-Team: pl <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.13.1\n"
+
+# Navigation
+msgid "YourBrand"
+msgstr "TwojaMarka"
+
+msgid "Home"
+msgstr "Strona główna"
+
+msgid "Services"
+msgstr "Usługi"
+
+msgid "Blog"
+msgstr "Blog"
+
+msgid "Contact"
+msgstr "Kontakt"
+
+# Homepage
+msgid "Welcome to Our Professional Services"
+msgstr "Witamy w naszych profesjonalnych usługach"
+
+msgid "Delivering excellence and innovation to help your business grow"
+msgstr "Dostarczamy doskonałość i innowacje, aby pomóc Twojej firmie się rozwijać"
+
+msgid "Explore Services"
+msgstr "Poznaj usługi"
+
+msgid "Get in Touch"
+msgstr "Skontaktuj się"
+
+msgid "Our Services"
+msgstr "Nasze usługi"
+
+msgid "Comprehensive solutions tailored to your needs"
+msgstr "Kompleksowe rozwiązania dostosowane do Twoich potrzeb"
+
+msgid "Consulting Services"
+msgstr "Usługi doradcze"
+
+msgid "Expert guidance to help you make informed business decisions and achieve your goals."
+msgstr "Eksperckie wsparcie, które pomoże Ci podejmować świadome decyzje biznesowe i osiągać cele."
+
+msgid "Learn More"
+msgstr "Dowiedz się więcej"
+
+msgid "Implementation"
+msgstr "Wdrożenie"
+
+msgid "Seamless execution of strategies and solutions with minimal disruption to your operations."
+msgstr "Płynne wdrażanie strategii i rozwiązań przy minimalnych zakłóceniach w Twoich operacjach."
+
+msgid "Ongoing Support"
+msgstr "Wsparcie ciągłe"
+
+msgid "Continuous assistance and maintenance to ensure long-term success and growth."
+msgstr "Ciągła pomoc i konserwacja zapewniające długoterminowy sukces i rozwój."
+
+msgid "Why Choose Us"
+msgstr "Dlaczego my"
+
+msgid "10+ Years Experience"
+msgstr "Ponad 10 lat doświadczenia"
+
+msgid "Proven track record of delivering exceptional results"
+msgstr "Udokumentowana historia dostarczania wyjątkowych rezultatów"
+
+msgid "Client-Focused"
+msgstr "Skoncentrowani na kliencie"
+
+msgid "Your success is our priority"
+msgstr "Twój sukces jest naszym priorytetem"
+
+msgid "Innovative Solutions"
+msgstr "Innowacyjne rozwiązania"
+
+msgid "Cutting-edge approaches to modern challenges"
+msgstr "Nowoczesne podejście do współczesnych wyzwań"
+
+msgid "Transparent Process"
+msgstr "Przejrzysty proces"
+
+msgid "Clear communication every step of the way"
+msgstr "Jasna komunikacja na każdym etapie"
+
+msgid "Latest from Our Blog"
+msgstr "Najnowsze z naszego bloga"
+
+msgid "Insights, tips, and industry news"
+msgstr "Spostrzeżenia, porady i wiadomości branżowe"
+
+msgid "Read More"
+msgstr "Czytaj więcej"
+
+msgid "View All Posts"
+msgstr "Zobacz wszystkie wpisy"
+
+msgid "Ready to Get Started?"
+msgstr "Gotowy do rozpoczęcia?"
+
+msgid "Contact us today to learn how we can help your business succeed"
+msgstr "Skontaktuj się z nami już dziś, aby dowiedzieć się, jak możemy pomóc Twojej firmie odnieść sukces"
+
+msgid "Contact Us"
+msgstr "Skontaktuj się z nami"
+
+# Blog
+msgid "Search posts..."
+msgstr "Szukaj wpisów..."
+
+msgid "Search"
+msgstr "Szukaj"
+
+msgid "All Categories"
+msgstr "Wszystkie kategorie"
+
+msgid "Business Tips"
+msgstr "Porady biznesowe"
+
+msgid "Technology"
+msgstr "Technologia"
+
+msgid "Case Studies"
+msgstr "Studia przypadków"
+
+msgid "views"
+msgstr "wyświetleń"
+
+msgid "No posts found"
+msgstr "Nie znaleziono wpisów"
+
+msgid "Check back soon for new content!"
+msgstr "Wróć wkrótce po nowe treści!"
+
+msgid "Previous"
+msgstr "Poprzednia"
+
+msgid "Next"
+msgstr "Następna"
+
+# Blog Post
+msgid "Customer Feedback"
+msgstr "Opinie klientów"
+
+msgid "Anonymous"
+msgstr "Anonimowy"
+
+msgid "No comments yet. Be the first to share your feedback!"
+msgstr "Brak komentarzy. Bądź pierwszy i podziel się swoją opinią!"
+
+msgid "Leave Your Feedback"
+msgstr "Zostaw swoją opinię"
+
+msgid "Post anonymously"
+msgstr "Opublikuj anonimowo"
+
+msgid "Name"
+msgstr "Imię"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Rating (Optional)"
+msgstr "Ocena (opcjonalnie)"
+
+msgid "No rating"
+msgstr "Bez oceny"
+
+msgid "Your Feedback"
+msgstr "Twoja opinia"
+
+msgid "Share your thoughts..."
+msgstr "Podziel się swoimi przemyśleniami..."
+
+msgid "Submit Feedback"
+msgstr "Wyślij opinię"
+
+msgid "Thank you for your feedback! Your comment is pending approval."
+msgstr "Dziękujemy za opinię! Twój komentarz oczekuje na zatwierdzenie."
+
+msgid "Name and email are required for non-anonymous comments."
+msgstr "Imię i e-mail są wymagane dla komentarzy nieanonimowych."
+
+msgid "Please correct the errors in the form."
+msgstr "Proszę poprawić błędy w formularzu."
+
+# Contact
+msgid "Get in Touch"
+msgstr "Skontaktuj się z nami"
+
+msgid "We'd love to hear from you. Send us a message and we'll respond as soon as possible."
+msgstr "Chcielibyśmy usłyszeć od Ciebie. Wyślij nam wiadomość, a odpowiemy tak szybko, jak to możliwe."
+
+msgid "Contact Information"
+msgstr "Informacje kontaktowe"
+
+msgid "Have a question or want to work together? Reach out to us using the contact form or through any of the methods below."
+msgstr "Masz pytanie lub chcesz współpracować? Skontaktuj się z nami za pomocą formularza kontaktowego lub jednej z poniższych metod."
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Warsaw, Poland"
+msgstr "Warszawa, Polska"
+
+msgid "Business Hours"
+msgstr "Godziny pracy"
+
+msgid "Monday - Friday: 9:00 AM - 6:00 PM"
+msgstr "Poniedziałek - Piątek: 9:00 - 18:00"
+
+msgid "Saturday: 10:00 AM - 4:00 PM"
+msgstr "Sobota: 10:00 - 16:00"
+
+msgid "Sunday: Closed"
+msgstr "Niedziela: Zamknięte"
+
+msgid "Send us a Message"
+msgstr "Wyślij nam wiadomość"
+
+msgid "Your name"
+msgstr "Twoje imię"
+
+msgid "your@email.com"
+msgstr "twoj@email.com"
+
+msgid "Optional"
+msgstr "Opcjonalnie"
+
+msgid "Subject"
+msgstr "Temat"
+
+msgid "Message"
+msgstr "Wiadomość"
+
+msgid "Tell us how we can help you..."
+msgstr "Powiedz nam, jak możemy Ci pomóc..."
+
+msgid "Send Message"
+msgstr "Wyślij wiadomość"
+
+msgid "Your message has been sent successfully. We will get back to you soon!"
+msgstr "Twoja wiadomość została wysłana pomyślnie. Wkrótce się z Tobą skontaktujemy!"
+
+# Services
+msgid "Comprehensive solutions designed to help your business thrive"
+msgstr "Kompleksowe rozwiązania zaprojektowane, aby pomóc Twojej firmie prosperować"
+
+msgid "Strategic Planning"
+msgstr "Planowanie strategiczne"
+
+msgid "Business Analysis"
+msgstr "Analiza biznesowa"
+
+msgid "Process Optimization"
+msgstr "Optymalizacja procesów"
+
+msgid "Risk Assessment"
+msgstr "Ocena ryzyka"
+
+msgid "Get Started"
+msgstr "Rozpocznij"
+
+msgid "Project Management"
+msgstr "Zarządzanie projektami"
+
+msgid "System Integration"
+msgstr "Integracja systemów"
+
+msgid "Team Training"
+msgstr "Szkolenie zespołu"
+
+msgid "Quality Assurance"
+msgstr "Zapewnienie jakości"
+
+msgid "24/7 Technical Support"
+msgstr "Wsparcie techniczne 24/7"
+
+msgid "Regular Maintenance"
+msgstr "Regularna konserwacja"
+
+msgid "Performance Monitoring"
+msgstr "Monitorowanie wydajności"
+
+msgid "Continuous Improvement"
+msgstr "Ciągłe doskonalenie"
+
+msgid "Ready to Transform Your Business?"
+msgstr "Gotowy na transformację swojej firmy?"
+
+msgid "Let us help you achieve your goals with our comprehensive services"
+msgstr "Pozwól nam pomóc Ci osiągnąć cele dzięki naszym kompleksowym usługom"
+
+msgid "Contact Us Today"
+msgstr "Skontaktuj się z nami już dziś"
+
+# Footer
+msgid "About Us"
+msgstr "O nas"
+
+msgid "We provide professional services to help businesses grow and succeed."
+msgstr "Świadczymy profesjonalne usługi, aby pomóc firmom rosnąć i odnosić sukcesy."
+
+msgid "Quick Links"
+msgstr "Szybkie linki"
+
+msgid "Contact Info"
+msgstr "Informacje kontaktowe"
+
+msgid "Follow Us"
+msgstr "Śledź nas"
+
+msgid "All rights reserved."
+msgstr "Wszelkie prawa zastrzeżone."

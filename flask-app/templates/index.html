@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Home') }} - {{ _('YourBrand') }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">
+            {{ _('Welcome to Our Professional Services') }}
+        </h1>
+        <p class="lead mb-4">
+            {{ _('Delivering excellence and innovation to help your business grow') }}
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{{ url_for('services') }}" class="btn btn-light btn-lg">
+                {{ _('Explore Services') }}
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">
+                {{ _('Get in Touch') }}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Services Overview -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-2">{{ _('Our Services') }}</h2>
+        <p class="text-center text-muted mb-5">{{ _('Comprehensive solutions tailored to your needs') }}</p>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card service-card border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-check-circle text-primary fs-1"></i>
+                        </div>
+                        <h4 class="card-title">{{ _('Consulting Services') }}</h4>
+                        <p class="card-text text-muted">
+                            {{ _('Expert guidance to help you make informed business decisions and achieve your goals.') }}
+                        </p>
+                        <a href="{{ url_for('services') }}#consulting" class="btn btn-outline-primary">
+                            {{ _('Learn More') }} <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card service-card border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-lightning text-primary fs-1"></i>
+                        </div>
+                        <h4 class="card-title">{{ _('Implementation') }}</h4>
+                        <p class="card-text text-muted">
+                            {{ _('Seamless execution of strategies and solutions with minimal disruption to your operations.') }}
+                        </p>
+                        <a href="{{ url_for('services') }}#implementation" class="btn btn-outline-primary">
+                            {{ _('Learn More') }} <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card service-card border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-headset text-primary fs-1"></i>
+                        </div>
+                        <h4 class="card-title">{{ _('Ongoing Support') }}</h4>
+                        <p class="card-text text-muted">
+                            {{ _('Continuous assistance and maintenance to ensure long-term success and growth.') }}
+                        </p>
+                        <a href="{{ url_for('services') }}#support" class="btn btn-outline-primary">
+                            {{ _('Learn More') }} <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ _('Why Choose Us') }}</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <i class="bi bi-award text-primary fs-1 mb-3"></i>
+                <h5>{{ _('10+ Years Experience') }}</h5>
+                <p class="text-muted">{{ _('Proven track record of delivering exceptional results') }}</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <i class="bi bi-people text-primary fs-1 mb-3"></i>
+                <h5>{{ _('Client-Focused') }}</h5>
+                <p class="text-muted">{{ _('Your success is our priority') }}</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <i class="bi bi-lightbulb text-primary fs-1 mb-3"></i>
+                <h5>{{ _('Innovative Solutions') }}</h5>
+                <p class="text-muted">{{ _('Cutting-edge approaches to modern challenges') }}</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <i class="bi bi-shield-check text-primary fs-1 mb-3"></i>
+                <h5>{{ _('Transparent Process') }}</h5>
+                <p class="text-muted">{{ _('Clear communication every step of the way') }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Blog Posts -->
+{% if latest_posts %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-2">{{ _('Latest from Our Blog') }}</h2>
+        <p class="text-center text-muted mb-5">{{ _('Insights, tips, and industry news') }}</p>
+        
+        <div class="row g-4">
+            {% for post in latest_posts %}
+            <div class="col-md-4">
+                <div class="card blog-card border-0 shadow-sm h-100">
+                    {% if post.featured_image %}
+                    <img src="{{ post.featured_image }}" class="card-img-top" alt="{{ post.get_title(get_locale()) }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> {{ post.published_at|format_date }}
+                            </small>
+                            {% if post.get_category(get_locale()) %}
+                            <span class="badge bg-primary">{{ post.get_category(get_locale()) }}</span>
+                            {% endif %}
+                        </div>
+                        <h5 class="card-title">{{ post.get_title(get_locale()) }}</h5>
+                        <p class="card-text text-muted">{{ post.get_excerpt(get_locale()) }}</p>
+                        <a href="{{ url_for('blog_post', slug=post.slug) }}" class="btn btn-outline-primary btn-sm">
+                            {{ _('Read More') }} <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('blog') }}" class="btn btn-primary">
+                {{ _('View All Posts') }}
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white text-center">
+    <div class="container">
+        <h2 class="mb-3">{{ _('Ready to Get Started?') }}</h2>
+        <p class="lead mb-4">
+            {{ _('Contact us today to learn how we can help your business succeed') }}
+        </p>
+        <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg">
+            {{ _('Contact Us') }}
+        </a>
+    </div>
+</section>
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
