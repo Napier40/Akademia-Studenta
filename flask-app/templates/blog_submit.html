@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Blog Post{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h2 class="card-title mb-4">
+                        <i class="bi bi-pencil-square"></i> Submit Your Blog Post
+                    </h2>
+                    
+                    <p class="text-muted mb-4">
+                        Share your thoughts, experiences, or knowledge with our community. 
+                        Your post will be reviewed by our team before being published.
+                    </p>
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Language Selection -->
+                        <div class="mb-4">
+                            {{ form.language.label(class="form-label") }}
+                            {{ form.language(class="form-select") }}
+                            <small class="form-text text-muted">Choose the language you want to write in</small>
+                        </div>
+                        
+                        <!-- Title -->
+                        <div class="mb-4">
+                            {{ form.title.label(class="form-label") }}
+                            {{ form.title(class="form-control" + (" is-invalid" if form.title.errors else ""), placeholder="Enter your blog post title") }}
+                            {% if form.title.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.title.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Excerpt -->
+                        <div class="mb-4">
+                            {{ form.excerpt.label(class="form-label") }}
+                            {{ form.excerpt(class="form-control", rows="3", placeholder="Write a brief summary of your post (optional)") }}
+                            <small class="form-text text-muted">This will appear in the blog listing</small>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="mb-4">
+                            {{ form.content.label(class="form-label") }}
+                            {{ form.content(class="form-control" + (" is-invalid" if form.content.errors else ""), rows="15", placeholder="Write your blog post content here...") }}
+                            {% if form.content.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.content.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            <small class="form-text text-muted">Minimum 50 characters</small>
+                        </div>
+                        
+                        <!-- Category -->
+                        <div class="mb-4">
+                            {{ form.category.label(class="form-label") }}
+                            {{ form.category(class="form-control", placeholder="e.g., News, Tips, Personal Story") }}
+                            <small class="form-text text-muted">Optional - helps readers find related content</small>
+                        </div>
+                        
+                        <!-- Featured Image -->
+                        <div class="mb-4">
+                            {{ form.featured_image.label(class="form-label") }}
+                            {{ form.featured_image(class="form-control", placeholder="https://example.com/image.jpg") }}
+                            <small class="form-text text-muted">Optional - URL to an image for your post</small>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> 
+                            <strong>Note:</strong> Your post will be reviewed by our team before being published. 
+                            This helps us maintain quality and ensure appropriate content.
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-send"></i> Submit Post
+                            </button>
+                            <a href="{{ url_for('blog') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Blog
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>

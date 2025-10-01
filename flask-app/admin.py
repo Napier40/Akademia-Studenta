@@ -60,6 +60,7 @@ def register_admin_routes(app):
         total_posts = BlogPost.query.count()
         published_posts = BlogPost.query.filter_by(status='published').count()
         draft_posts = BlogPost.query.filter_by(status='draft').count()
+        pending_posts = BlogPost.query.filter_by(status='pending').count()
         total_comments = Comment.query.count()
         pending_comments = Comment.query.filter_by(status='pending').count()
         total_inquiries = ContactInquiry.query.count()
@@ -71,16 +72,21 @@ def register_admin_routes(app):
         # Get pending comments
         pending_comments_list = Comment.query.filter_by(status='pending').order_by(Comment.created_at.desc()).limit(5).all()
         
+        # Get pending blog posts
+        pending_posts_list = BlogPost.query.filter_by(status='pending').order_by(BlogPost.created_at.desc()).limit(5).all()
+        
         return render_template('admin/dashboard.html',
                              total_posts=total_posts,
                              published_posts=published_posts,
                              draft_posts=draft_posts,
+                             pending_posts=pending_posts,
                              total_comments=total_comments,
                              pending_comments=pending_comments,
                              total_inquiries=total_inquiries,
                              new_inquiries=new_inquiries,
                              recent_posts=recent_posts,
-                             pending_comments_list=pending_comments_list)
+                             pending_comments_list=pending_comments_list,
+                             pending_posts_list=pending_posts_list)
     
     
     @app.route('/admin/posts')
@@ -88,13 +94,18 @@ def register_admin_routes(app):
     def admin_posts():
         """List all blog posts"""
         page = request.args.get('page', 1, type=int)
+        status_filter = request.args.get('status', 'all')
         per_page = 20
         
-        posts = BlogPost.query.order_by(BlogPost.created_at.desc()).paginate(
+        query = BlogPost.query
+        if status_filter != 'all':
+            query = query.filter_by(status=status_filter)
+        
+        posts = query.order_by(BlogPost.created_at.desc()).paginate(
             page=page, per_page=per_page, error_out=False
         )
         
-        return render_template('admin/posts.html', posts=posts)
+        return render_template('admin/posts.html', posts=posts, status_filter=status_filter)
     
     
     @app.route('/admin/posts/new', methods=['GET', 'POST'])
@@ -182,6 +193,31 @@ def register_admin_routes(app):
         
         flash('Blog post deleted successfully!', 'success')
         return redirect(url_for('admin_posts'))
+    
+    
+    @app.route('/admin/posts/<int:post_id>/approve', methods=['POST'])
+    @admin_required
+    def admin_approve_post(post_id):
+        """Approve pending blog post"""
+        post = BlogPost.query.get_or_404(post_id)
+        post.status = 'published'
+        post.published_at = datetime.utcnow()
+        db.session.commit()
+        
+        flash('Blog post approved and published!', 'success')
+        return redirect(request.referrer or url_for('admin_posts'))
+    
+    
+    @app.route('/admin/posts/<int:post_id>/reject', methods=['POST'])
+    @admin_required
+    def admin_reject_post(post_id):
+        """Reject pending blog post"""
+        post = BlogPost.query.get_or_404(post_id)
+        post.status = 'rejected'
+        db.session.commit()
+        
+        flash('Blog post rejected!', 'success')
+        return redirect(request.referrer or url_for('admin_posts'))
     
     
     @app.route('/admin/comments')

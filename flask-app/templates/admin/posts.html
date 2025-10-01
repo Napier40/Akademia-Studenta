@@ -5,9 +5,17 @@
 {% block content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Blog Posts</h1>
-    <a href="{{ url_for('admin_new_post') }}" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> New Post
-    </a>
+    <div>
+        <div class="btn-group me-2">
+            <a href="{{ url_for('admin_posts', status='all') }}" class="btn btn-sm btn-outline-secondary {{ 'active' if status_filter == 'all' else '' }}">All</a>
+            <a href="{{ url_for('admin_posts', status='pending') }}" class="btn btn-sm btn-outline-warning {{ 'active' if status_filter == 'pending' else '' }}">Pending</a>
+            <a href="{{ url_for('admin_posts', status='published') }}" class="btn btn-sm btn-outline-success {{ 'active' if status_filter == 'published' else '' }}">Published</a>
+            <a href="{{ url_for('admin_posts', status='draft') }}" class="btn btn-sm btn-outline-secondary {{ 'active' if status_filter == 'draft' else '' }}">Draft</a>
+        </div>
+        <a href="{{ url_for('admin_new_post') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> New Post
+        </a>
+    </div>
 </div>
 
 {% if posts.items %}
@@ -43,6 +51,18 @@
                 <td>{{ post.created_at.strftime('%Y-%m-%d') }}</td>
                 <td>
                     <div class="btn-group btn-group-sm">
+                        {% if post.status == 'pending' %}
+                        <form method="POST" action="{{ url_for('admin_approve_post', post_id=post.id) }}" class="d-inline">
+                            <button type="submit" class="btn btn-success" title="Approve">
+                                <i class="bi bi-check-circle"></i>
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ url_for('admin_reject_post', post_id=post.id) }}" class="d-inline">
+                            <button type="submit" class="btn btn-warning" title="Reject">
+                                <i class="bi bi-x-circle"></i>
+                            </button>
+                        </form>
+                        {% endif %}
                         <a href="{{ url_for('admin_edit_post', post_id=post.id) }}" class="btn btn-outline-primary">
                             <i class="bi bi-pencil"></i>
                         </a>
