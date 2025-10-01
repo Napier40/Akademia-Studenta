@@ -3,13 +3,20 @@ Flask Application - Bilingual Website with Blog and Anonymous Comments
 English and Polish language support
 """
 
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import (
+    Flask, render_template, request, redirect, url_for, flash, session
+)
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_babel import Babel, gettext, lazy_gettext as _l
 from flask_wtf.csrf import CSRFProtect
 from datetime import datetime
 import os
+from flask_wtf import FlaskForm
+from wtforms import (
+    StringField, TextAreaField, BooleanField, SelectField
+)
+from wtforms.validators import DataRequired, Email, Optional, Length
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -26,20 +33,26 @@ app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
-babel = Babel(app)
+babel = Babel()
+
 
 # Babel locale selector
-@babel.localeselector
 def get_locale():
     # Check if language is set in session
     if 'language' in session:
         return session['language']
     # Try to get from request
-    return request.accept_languages.best_match(app.config['BABEL_SUPPORTED_LOCALES'])
+    return request.accept_languages.best_match(
+        app.config['BABEL_SUPPORTED_LOCALES']
+    )
+
+
+babel.init_app(app, locale_selector=get_locale)
 
 # ============================================
 # DATABASE MODELS
 # ============================================
+
 
 class BlogPost(db.Model):
     __tablename__ = 'blog_posts'
@@ -109,18 +122,15 @@ class ContactInquiry(db.Model):
     message = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(20), default='new')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    def __repr__(self):
-        return f'<ContactInquiry {self.id} from {self.name}>'
-
+# ============================================
+# FORMS
+# ============================================
+from wtforms.validators import DataRequired, Email, Optional, Length
 
 # ============================================
 # FORMS
 # ============================================
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, BooleanField, IntegerField, SelectField
-from wtforms.validators import DataRequired, Email, Optional, Length, NumberRange
 
 class CommentForm(FlaskForm):
     author_name = StringField(_l('Name'), validators=[Optional(), Length(max=100)])
