@@ -4,6 +4,7 @@ Configuration file for Flask application
 import os
 from datetime import timedelta
 
+
 class Config:
     """Base configuration"""
     # Secret key for sessions and CSRF
