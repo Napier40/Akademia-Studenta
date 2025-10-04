@@ -17,27 +17,27 @@ def create_app(config_class=Config):
     """
     # Initialize Flask app
     app = Flask(__name__)
-    
+
     # Load configuration
     app.config.from_object(config_class)
-    
+
     # Initialize database
     init_db(app)
-    
+
     # Initialize extensions (Babel, CSRF, Migrate)
     init_extensions(app)
-    
+
     # Register routes
     register_routes(app)
-    
+
     # Register admin routes
     from admin import register_admin_routes
     register_admin_routes(app)
-    
+
     # Register customer blog routes
     from customer_blog import register_customer_blog_routes
     register_customer_blog_routes(app)
-    
+
     # Context processor for templates
     @app.context_processor
     def inject_language():
@@ -48,7 +48,7 @@ def create_app(config_class=Config):
             current_language=session.get('language', 'en'),
             get_locale=get_locale
         )
-    
+
     # Template filters
     @app.template_filter('format_date')
     def format_date(date):
@@ -59,7 +59,7 @@ def create_app(config_class=Config):
         if isinstance(date, datetime):
             return date.strftime('%B %d, %Y')
         return str(date)
-    
+
     return app
 
 
@@ -76,5 +76,5 @@ if __name__ == '__main__':
     print("📝 Blog: http://localhost:5000/blog")
     print("📧 Contact: http://localhost:5000/contact")
     print("="*60 + "\n")
-    
+
     app.run(debug=True, host='0.0.0.0', port=5001)
