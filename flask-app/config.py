@@ -22,6 +22,11 @@ class Config:
     BABEL_SUPPORTED_LOCALES = ['en', 'pl']
     BABEL_TRANSLATION_DIRECTORIES = 'translations'
     
+    # Translation API Configuration
+    DEEPL_API_KEY = os.environ.get('DEEPL_API_KEY', '')
+    ENABLE_AUTO_TRANSLATION = os.environ.get('ENABLE_AUTO_TRANSLATION', 'True').lower() == 'true'
+    TRANSLATION_CACHE_TIMEOUT = 3600  # 1 hour
+    
     # Session configuration
     PERMANENT_SESSION_LIFETIME = timedelta(days=7)
     

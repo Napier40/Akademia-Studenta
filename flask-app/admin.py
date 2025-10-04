@@ -198,8 +198,19 @@ def register_admin_routes(app):
     @app.route('/admin/posts/<int:post_id>/approve', methods=['POST'])
     @admin_required
     def admin_approve_post(post_id):
-        """Approve pending blog post"""
+        """Approve pending blog post with auto-translation"""
         post = BlogPost.query.get_or_404(post_id)
+        
+        # Auto-translate if enabled and post is from customer
+        if app.config.get('ENABLE_AUTO_TRANSLATION') and post.is_customer_post:
+            try:
+                from translation_service import translate_blog_post
+                translated = translate_blog_post(post)
+                if translated:
+                    flash('Post auto-translated successfully!', 'info')
+            except Exception as e:
+                flash(f'Auto-translation failed: {str(e)}. Publishing with original language only.', 'warning')
+        
         post.status = 'published'
         post.published_at = datetime.utcnow()
         db.session.commit()

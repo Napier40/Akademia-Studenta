@@ -190,3 +190,71 @@ def register_routes(app):
         
         # Redirect back to the previous page
         return redirect(request.referrer or url_for('index'))
+    
+    
+    @app.route('/api/translate', methods=['POST'])
+    def api_translate():
+        """
+        API endpoint for on-demand translation
+        Used by admin panel for manual translation requests
+        """
+        from flask import jsonify
+        
+        data = request.get_json()
+        
+        text = data.get('text', '')
+        source = data.get('source', 'EN')
+        target = data.get('target', 'PL')
+        
+        if not text:
+            return jsonify({'error': 'No text provided'}), 400
+        
+        try:
+            from translation_service import get_translation_service
+            translator = get_translation_service()
+            
+            if not translator.is_available():
+                return jsonify({'error': 'Translation service not available'}), 503
+            
+            translation = translator.translate(text, source, target)
+            
+            return jsonify({
+                'translation': translation,
+                'source': source,
+                'target': target,
+                'success': True
+            })
+        except Exception as e:
+            return jsonify({'error': str(e), 'success': False}), 500
+    
+    
+    @app.route('/api/translation-usage')
+    def api_translation_usage():
+        """
+        Get translation API usage statistics
+        Admin only endpoint
+        """
+        from flask import jsonify
+        
+        # Check if user is admin
+        if not session.get('is_admin'):
+            return jsonify({'error': 'Unauthorized'}), 401
+        
+        try:
+            from translation_service import get_translation_service
+            translator = get_translation_service()
+            
+            if not translator.is_available():
+                return jsonify({'error': 'Translation service not available'}), 503
+            
+            usage = translator.get_usage()
+            
+            if usage:
+                return jsonify({
+                    'usage': usage,
+                    'success': True
+                })
+            else:
+                return jsonify({'error': 'Could not retrieve usage data'}), 500
+        except Exception as e:
+            return jsonify({'error': str(e), 'success': False}), 500

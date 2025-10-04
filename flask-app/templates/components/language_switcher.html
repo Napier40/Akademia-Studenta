@@ -1,0 +1,179 @@
+<!-- Enhanced Language Switcher Component -->
+<!-- Can be included in base.html or any template -->
+
+<!-- Option 1: Toggle Switch (Modern) -->
+<div class="language-switcher-toggle">
+    <span class="lang-label {% if get_locale() == 'en' %}active{% endif %}">EN</span>
+    <label class="switch" title="Switch Language">
+        <input type="checkbox" 
+               {% if get_locale() == 'pl' %}checked{% endif %}
+               onchange="switchLanguage(this)">
+        <span class="slider round"></span>
+    </label>
+    <span class="lang-label {% if get_locale() == 'pl' %}active{% endif %}">PL</span>
+</div>
+
+<!-- Option 2: Dropdown with Flags (Alternative) -->
+<!-- Uncomment to use this instead of toggle -->
+<!--
+<div class="dropdown language-dropdown">
+    <button class="btn btn-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {% if get_locale() == 'en' %}
+            🇬🇧 English
+        {% else %}
+            🇵🇱 Polski
+        {% endif %}
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+            <a class="dropdown-item {% if get_locale() == 'en' %}active{% endif %}" 
+               href="{{ url_for('set_language', language='en') }}">
+                🇬🇧 English
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item {% if get_locale() == 'pl' %}active{% endif %}" 
+               href="{{ url_for('set_language', language='pl') }}">
+                🇵🇱 Polski
+            </a>
+        </li>
+    </ul>
+</div>
+-->
+
+<style>
+/* Toggle Switch Styles */
+.language-switcher-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-label {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #6c757d;
+    transition: color 0.3s ease;
+    user-select: none;
+}
+
+.lang-label.active {
+    color: var(--bs-primary, #0d6efd);
+    font-weight: 600;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--bs-primary, #0d6efd);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--bs-primary, #0d6efd);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Dropdown Styles (if using dropdown option) */
+.language-dropdown .dropdown-toggle {
+    text-decoration: none;
+    color: var(--bs-body-color);
+    padding: 0.5rem 1rem;
+}
+
+.language-dropdown .dropdown-toggle:hover {
+    color: var(--bs-primary);
+}
+
+.language-dropdown .dropdown-item.active {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+/* Loading indicator */
+.language-loading {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    z-index: 9999;
+}
+
+.language-loading.show {
+    display: block;
+}
+</style>
+
+<script>
+function switchLanguage(checkbox) {
+    const lang = checkbox.checked ? 'pl' : 'en';
+    
+    // Show loading indicator
+    showLoadingIndicator();
+    
+    // Redirect to set language
+    window.location.href = "{{ url_for('set_language', language='') }}" + lang;
+}
+
+function showLoadingIndicator() {
+    // Create loading indicator if it doesn't exist
+    let loader = document.getElementById('language-loading');
+    if (!loader) {
+        loader = document.createElement('div');
+        loader.id = 'language-loading';
+        loader.className = 'language-loading';
+        loader.innerHTML = '<i class="bi bi-translate"></i> Switching language...';
+        document.body.appendChild(loader);
+    }
+    loader.classList.add('show');
+}
+</script>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
