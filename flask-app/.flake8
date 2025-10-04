@@ -1,0 +1,41 @@
+[flake8]
+# Flake8 Configuration for Code Quality
+
+# Maximum line length
+max-line-length = 100
+
+# Exclude patterns
+exclude =
+    .git,
+    __pycache__,
+    venv,
+    env,
+    .venv,
+    migrations,
+    instance,
+    logs,
+    .pytest_cache,
+    *.pyc,
+    .DS_Store
+
+# Ignore specific errors
+ignore =
+    E203,  # whitespace before ':'
+    E501,  # line too long (handled by black)
+    W503,  # line break before binary operator
+    E402,  # module level import not at top of file
+
+# Maximum complexity
+max-complexity = 10
+
+# Show source code for errors
+show-source = True
+
+# Show pep8 error codes
+show-pep8 = True
+
+# Count errors
+count = True
+
+# Statistics
+statistics = True
